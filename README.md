@@ -7,6 +7,13 @@ Data jsou získávána pomocí web scrapingu z oficiálních stránek Českého 
 
 ## Postup správného spuštění projektu
 
+### Požadovaná verze Pythonu
+Doporučená verze Pythonu: 3.10 nebo vyšší
+
+Minimální podporovaná verze: 3.9
+
+Ve starších verzích Pythonu nejsou podporovány některé typové typové anotace (např. `list[str]`).
+
 ### Instalace požadovaných knihoven
 Soubor požadavků (použité knihovny) je uveden v souboru `requirements.txt`.
 Doporučuje se vytvořit nové virtuální prostředí a následně spustit:
