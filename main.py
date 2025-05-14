@@ -101,9 +101,8 @@ def ziskej_kod_kraje(adresa_okres: str) -> str:
     >>> kod
     "11"
     """
-
-    cislo = adresa_okres.split("=")[2].split("&")[0]
-    return cislo
+    
+    return adresa_okres.split("=")[2].split("&")[0]
 
 
 def ziskej_kody_obci(adresa_okres: str) -> list[str]:
