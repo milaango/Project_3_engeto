@@ -274,6 +274,29 @@ def vytvor_slovnik_o_obci(obec_adresa: str, obec_kod: str) -> dict:
     return udaje_o_obci
 
 
+def shrn_obce_do_listu(adresy_obci: list[str], kody = list[str]) -> list[dict]:
+    """
+    Funkce, která z URL adres jednotlivých obcí a kódů vytvoří list
+    obsahující slovník s údaji o jednotlivých obcí; přičemž využívá
+    funkci vytvor_slovnik_o_obci
+
+    :param adresy_obci: adresy jednotlivých obcí
+    :type adresy_obci: list[str]
+    :param kody: cisla (str) specifická pro každou obec
+    :type kody: list[str]
+
+    """
+    soubor_obci = list()
+
+    for index_obce in range(len(adresy_obci)):
+        slovnik_s_obci = vytvor_slovnik_o_obci(
+            adresy_obci[index_obce], kody[index_obce]
+            )
+        soubor_obci.append(slovnik_s_obci)
+
+    return soubor_obci
+
+
 def zapis_do_csv(nazev: str, list_slovniku: list[dict]) -> str:
     """
     Funkce, která zapíše list slovníků do CSV souboru.
@@ -320,19 +343,13 @@ def main(adresa_url: str, nazev_csv: str):
     soubor_adres = vytvor_adresy_obci(kod_kraje, kod_okresu, kody_obci)
     click.echo(f"STAHUJI DATA Z VYBRANEHO URL: {adresa_url}")
 
-    # Vytvoř list, kam budou vkládány všechny slovníky s daty o každé obcích:
-    soubor_obci = list()
-
-    # Pro každou obec z daného okresu vytvoř slovník s údaji:
-    for index_obce in range(len(soubor_adres)):
-        slovnik_s_obci = vytvor_slovnik_o_obci(
-            soubor_adres[index_obce], kody_obci[index_obce]
-            )
-        # Přidej slovník s daty o obci do výsledného listu:
-        soubor_obci.append(slovnik_s_obci)
+    # Pomocí uživ. funkce vytvor_slovnik_o_obci je nejprve vytvoren slovnik
+    # s údaji o jednotlivých obcích a následně jsou tyto slovníky shrnuty
+    # do listu pomocí uživ. funkce shrn_obce_do_listu:
+    list_s_obcemi = shrn_obce_do_listu(soubor_adres, kody_obci)
     
     # Zapiš výsledný list s jednotlivými slovníky do CSV souboru:
-    vysledny_csv_soubor = (zapis_do_csv(nazev_csv + ".csv", soubor_obci))
+    vysledny_csv_soubor = (zapis_do_csv(nazev_csv + ".csv", list_s_obcemi))
     click.echo(f"ULOZENO DO SOUBORU: {vysledny_csv_soubor}")
     
 
