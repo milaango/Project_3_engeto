@@ -81,6 +81,8 @@ def over_nazev_souboru(nazev_souboru: str) -> str:
 
     try:
         pathvalidate.validate_filename(nazev_souboru)
+        if nazev_souboru.endswith(".csv"):
+            nazev_souboru = nazev_souboru.rsplit(".", 1)[0]
         return nazev_souboru
     except pathvalidate.ValidationError:
         raise click.BadParameter(
@@ -101,7 +103,7 @@ def ziskej_kod_kraje(adresa_okres: str) -> str:
     >>> kod
     "11"
     """
-    
+
     return adresa_okres.split("=")[2].split("&")[0]
 
 
