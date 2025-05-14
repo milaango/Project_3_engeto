@@ -5,11 +5,12 @@ author: Milan Angelis
 email: milanangelis@seznam.cz
 """
 
+import csv
 
 import click
 import pathvalidate
 import requests
-import csv
+
 from bs4 import BeautifulSoup as bs
 
 
@@ -195,35 +196,34 @@ def vytvor_slovnik_o_obci(obec_adresa: str, obec_kod: str) -> dict:
     ... )
     >>> udaje_obec
     {
-        'Kód obce': '593711', 
-        'Název obce': 'Znojmo', 
-        'Voliči v seznamu': '27 255',
-        'Vydané obálky': '16 292', 
-        'Platné hlasy': '16 179', 
-        'Občanská demokratická strana': '1 644',
-        'Řád národa - Vlastenecká unie': '21', 
-        'CESTA ODPOVĚDNÉ SPOLEČNOSTI': '7', 
-        'Česká str.sociálně demokrat.': '1 725', 
-        'Radostné Česko': '8',
-        'STAROSTOVÉ A NEZÁVISLÍ': '506', 
-        'Komunistická str.Čech a Moravy': '1 431',
-        'Strana zelených': '175', 
-        'ROZUMNÍ-stop migraci,diktát.EU': '115',
-        'Strana svobodných občanů': '257', 
-        'Blok proti islam.-Obran.domova': '18',
-        'Občanská demokratická aliance': '38',
-        'Česká pirátská strana': '1 255',
-        'Referendum o Evropské unii': '6', 
-        'TOP 09': '507', 'ANO 2011': '5 023',
-        'Dobrá volba 2016': '16', 
-        'SPR-Republ.str.Čsl. M.Sládka': '23', 
-        'Křesť.demokr.unie-Čs.str.lid.': '896', 
-        'Česká strana národně sociální': '3',
-        'REALISTÉ': '68', 'SPORTOVCI': '11', 
-        'Dělnic.str.sociální spravedl.': '16',
-        'Svob.a př.dem.-T.Okamura (SPD)': '2 316' , 
-        'Strana Práv Občanů': '88', 
-        'Národ Sobě': '6'
+        "Kód obce": "593711", 
+        "Název obce": "Znojmo", 
+        "Voliči v seznamu": "27 255", 
+        "Vydané obálky": "16 292", 
+        "Platné hlasy": "16 179", 
+        "Občanská demokratická strana": "1 644", 
+        "Řád národa - Vlastenecká unie": "21", 
+        "CESTA ODPOVĚDNÉ SPOLEČNOSTI": "7", 
+        "Česká str.sociálně demokrat.": "1 725", 
+        "Radostné Česko": "8", 
+        "STAROSTOVÉ A NEZÁVISLÍ": "506", 
+        "Komunistická str.Čech a Moravy": "1 431", 
+        "Strana zelených": "175", 
+        "ROZUMNÍ-stop migraci,diktát.EU": "115", 
+        "Strana svobodných občanů": "257", 
+        "Blok proti islam.-Obran.domova": "18", 
+        "Občanská demokratická aliance": "38", 
+        "Česká pirátská strana": "1 255", 
+        "Referendum o Evropské unii": "6", 
+        "TOP 09": "507", "ANO 2011": "5 023", 
+        "Dobrá volba 2016": "16", 
+        "SPR-Republ.str.Čsl. M.Sládka": "23", 
+        "Křesť.demokr.unie-Čs.str.lid.": "896", 
+        "Česká strana národně sociální": "3", 
+        "REALISTÉ": "68", "SPORTOVCI": "11", 
+        "Dělnic.str.sociální spravedl.": "16", 
+        "Svob.a př.dem.-T.Okamura (SPD)": "2 316", 
+        "Strana Práv Občanů": "88", "Národ Sobě": "6"
     }
     """
 
@@ -287,8 +287,8 @@ def zapis_do_csv(nazev: str, list_slovniku: list[dict]) -> str:
 
     :Example:
     >>> soubor_csv = zapis_do_csv("csv_s_vysledky.csv", 
-    ... [{'Kód': 1456, 'Obec': 'Město X'}, 
-    ... {'Kód': 1789, 'Obec': 'Město Y'}])
+    ... [{"Kód": 1456, "Obec": "Město X"}, 
+    ... {"Kód": 1789, "Obec": "Město Y"}])
     >>> soubor_csv
     "csv_s_vysledky.csv"
     """
