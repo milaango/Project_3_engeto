@@ -103,8 +103,10 @@ def ziskej_kod_kraje(adresa_okres: str) -> str:
     >>> kod
     "11"
     """
-
-    return adresa_okres.split("=")[2].split("&")[0]
+    try:
+        return adresa_okres.split("=")[2].split("&")[0]
+    except IndexError:
+        raise ValueError("Nelze získat URl adresu okresu.")
 
 
 def ziskej_kody_obci(adresa_okres: str) -> list[str]:
@@ -232,22 +234,29 @@ def vytvor_slovnik_o_obci(obec_adresa: str, obec_kod: str) -> dict:
     rozdelene_html_ob = bs(html_obec.text, features="html.parser")
 
     # Získání názvu obce
-    hlavicka_obce = rozdelene_html_ob.find_all("h3")
-    # Praha -> název je v 2. <h3> tagu
-    if "vyber=1100" in obec_adresa:
-        nazev_obce = hlavicka_obce[1].text.strip()
+    try:
+        hlavicka_obce = rozdelene_html_ob.find_all("h3")
+        # Praha -> název je v 2. <h3> tagu
+        if "vyber=1100" in obec_adresa:
+            nazev_obce = hlavicka_obce[1].text.strip()
     
-    else: 
-    # Ostatní oblasti -> název je ve 3. <h3> tagu:
-        nazev_obce = hlavicka_obce[2].text.strip()
-    nazev_obce = nazev_obce.replace("Obec: ", "") # Získej pouze název obce
+        else: 
+            # Ostatní oblasti -> název je ve 3. <h3> tagu:
+            nazev_obce = hlavicka_obce[2].text.strip()
+        nazev_obce = nazev_obce.replace("Obec: ", "") # Získej pouze název obce
 
-    # Získání údajů o obci (počet voličů, vydané obálky a platné hlasy)
-    tabulka_1 = rozdelene_html_ob.find("table",{"id": "ps311_t1"})
-    vsechna_tr = tabulka_1.find_all("tr")
-    radek_3 = vsechna_tr[2].text.splitlines()
-    radek_3 = [udaj.replace("\xa0", " ") for udaj in radek_3]
-    volici, obalky, hlasy = radek_3[4], radek_3[5], radek_3[8]
+    except IndexError:
+        raise ValueError("Nelze získat název obce z dané URL adresy")
+
+    try:
+        # Získání údajů o obci (počet voličů, vydané obálky a platné hlasy)
+        tabulka_1 = rozdelene_html_ob.find("table",{"id": "ps311_t1"})
+        vsechna_tr = tabulka_1.find_all("tr")
+        radek_3 = vsechna_tr[2].text.splitlines()
+        radek_3 = [udaj.replace("\xa0", " ") for udaj in radek_3]
+        volici, obalky, hlasy = radek_3[4], radek_3[5], radek_3[8]
+    except IndexError:
+        raise ValueError("Nelze získat základní údaje o obci.")
 
     # Získání listu názvů stran a přísluných počtů hlasů:
     nazvy_stran = rozdelene_html_ob.find_all("td", {"class": "overflow_name"})
